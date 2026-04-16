@@ -1,6 +1,22 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import ChatMessages from '../components/chat/ChatMessages.vue';
 import MessageBox from '../components/chat/MessageBox.vue';
+import type { ChatMessage } from '../interfaces/chat-message-interface';
+
+const messages = ref<ChatMessage[]>([
+    {
+        id: new Date().getTime() + Math.random(),
+        message: 'Hola',
+        itsMine: true,
+    },
+    {
+        id: new Date().getTime() + Math.random() + 1,
+        message: 'Chau',
+        itsMine: false,
+        image: "https://yesno.wtf/assets/no/17-829284e9dd894ce9fb65fbe86d2e382c.gif"
+    },
+])
 
 </script>
 
@@ -10,7 +26,7 @@ import MessageBox from '../components/chat/MessageBox.vue';
       <span>Mi esposa</span>
     </div>
 
-    <ChatMessages />
+    <ChatMessages :messages="messages"/>
 
     <MessageBox />
   </div>

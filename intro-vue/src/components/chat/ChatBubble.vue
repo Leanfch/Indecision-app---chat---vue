@@ -9,6 +9,7 @@
     <div v-else class="flex">
         <div class="bg-gray-300 text-black p-2 rounded-lg max-w-xs">
             {{ message }}
+            <img :src="image" alt="YesNoImage" class="w-52 h-52 object-cover rounded-md">
         </div>
     </div>
 </template>
