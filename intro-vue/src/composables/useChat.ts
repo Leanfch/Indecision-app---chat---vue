@@ -1,26 +1,35 @@
 import { ref } from "vue"
 import type { ChatMessage } from "../interfaces/chat-message-interface"
+import type { YesNoResponse } from "../interfaces/yes-no-response"
 
 export const useChat = () => {
-const messages = ref<ChatMessage[]>([
-    {
-        id: new Date().getTime() + Math.random(),
-        message: 'Hola',
-        itsMine: true,
-    },
-    {
-        id: new Date().getTime() + Math.random() + 1,
-        message: 'Chau',
-        itsMine: false,
-        image: "https://yesno.wtf/assets/no/17-829284e9dd894ce9fb65fbe86d2e382c.gif"
-    },
-])
+const messages = ref<ChatMessage[]>([])
 
-const onMessage = (text: string) => {
+const onMessage = async (text: string) => {
+
+    const getResponse = async () => {
+        const resp = await fetch('https://yesno.wtf/api')
+        const data = (await resp.json()) as YesNoResponse
+
+        return data
+    }
+
+    if ( text.length === 0 ) return
     messages.value.push({
         id: new Date().getTime(),
         itsMine: true,
         message: text
+    })
+
+    if ( !text.endsWith('?') ) return
+
+    const { answer, image } = await getResponse()
+
+    messages.value.push({
+        id: new Date().getTime(),
+        itsMine: false,
+        message: answer,
+        image: image
     })
 }
 
